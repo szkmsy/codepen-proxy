@@ -38,7 +38,7 @@ function index() {
             </head>
             <body>
                 <form method="post" action="/">
-                    <input name="url" type="text" placeholder="Put url" required>
+                    <input name="url" type="text" placeholder="Put url" pattern="https://codepen.io.*" required>
                     <button type="submit">submit</button>
                 </form>
             </body>
@@ -70,6 +70,10 @@ app.get("/", (req, res) => {
 
 app.post('/', async (req, res) => {
     const url = req.body.url;
+    if (!/https:\/\/codepen\.io\/*/.test(url)) {
+        res.send(index())
+        return;
+    }
     const html = await getHtml(url);
     res.send(html);
 })
